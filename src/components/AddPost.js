@@ -1,32 +1,34 @@
 import axios from "axios"
-import React, { useState } from "react"
+import React, { useRef } from "react"
 
 export function AddPost() {
-    const [title, setTitle] = useState("")
-    const [author, setAuthor] = useState("")
-    const [content, setContent] = useState("")
+    const formRef = useRef()
 
     return (
         <>
             <h1>Add post</h1>
-            <input placeholder="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-            <input placeholder="author" value={author} onChange={(e) => setAuthor(e.target.value)}/>
-            <input placeholder="content" value={content} onChange={(e) => setContent(e.target.value)}/>
-            <button  
-                onClick={() => {
-                    axios.post("http://localhost:8080/posts", {
-                        title,
-                        author,
-                        content,
-                    }).then(() => {
-                        setTitle("")
-                        setAuthor("")
-                        setContent("")
-                    })
-                }}
-            >
-                New Post
-            </button>
+            <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
+                <input placeholder="title" name="title"/>
+                <input placeholder="author" name="author"/>
+                <input placeholder="content" name="content"/>
+                <button
+                    onClick={() => {
+                        const form = formRef.current
+                        const {title, author, content} = form
+                        axios.post("http://localhost:8080/posts", {
+                            title: title.value,
+                            author: author.value,
+                            content: content.value,
+                        }).then(() => {
+                            title.value = ""
+                            author.value = ""
+                            content.value = ""
+                        })
+                    }}
+                >
+                    New Post
+                </button>
+            </form>
         </>
     )
 }

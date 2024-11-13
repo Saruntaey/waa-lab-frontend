@@ -2,16 +2,17 @@ import React , {useState} from "react"
 import { Posts } from "./Posts"
 import { AddPost } from "./AddPost"
 import { PostDetail } from "./PostDetail"
+import { SelectedPostCtx } from "../context/SelectedPost"
 
 
 export function DashBoard() {
     const [postId, setPostId] = useState(null)
 
     return (
-        <div>
+        <SelectedPostCtx.Provider value={postId}>
             <Posts onPostSelect={setPostId} />
-            {postId && <PostDetail id={postId} onDeleted={() => setPostId(null)} />}
+            {postId && <PostDetail onDeleted={() => setPostId(null)} />}
             <AddPost />
-        </div>
+        </SelectedPostCtx.Provider>
     ) 
 }
