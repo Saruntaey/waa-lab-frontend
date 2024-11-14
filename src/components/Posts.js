@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import axios from "axios"
 import { Post } from "./Post"
 import "./Posts.css"
+import { Link } from "react-router-dom"
 
 export function Posts(props) {
     const [posts, setPosts] = useState([])
@@ -16,7 +17,7 @@ export function Posts(props) {
         <>
             <h1>Posts</h1>
             <div className="card-holder">
-                {posts.map(p => <Post key={p.id} post={p} onPostSelect={props.onPostSelect} />)}
+                {posts.map(p => <Link key={p.id} to={`${p.id}`}><Post post={p} onPostSelect={props.onPostSelect} /></Link>)}
             </div>
         </>
         
